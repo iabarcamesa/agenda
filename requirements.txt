@@ -1,0 +1,5 @@
+pytest==6.1.2
+Werkzeug==0.16.1
+flask==1.1.1
+flask-restx==0.2.0
+pyjwt==1.7.1

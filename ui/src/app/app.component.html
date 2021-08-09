@@ -1,0 +1,84 @@
+
+<body>
+
+  <main>
+    <section>
+
+      <form>
+        <label>Año</label>
+        <select name="year" [(ngModel)]="selectedYear">
+          <option [value]="item" *ngFor="let item of years">{{item}}</option>
+        </select>
+        <label>Mes</label>
+        <select name="month" [(ngModel)]="selectedMonth">
+          <option [value]="item" *ngFor="let item of months">{{item}}</option>
+        </select>
+        <button (click)="showAgenda()">Ver agenda</button>
+      </form>
+
+      <table>
+        <thead>
+          <tr>
+            <th>LUNES</th>
+            <th>MARTES</th>
+            <th>MIERCOLES</th>
+            <th>JUEVES</th>
+            <th>VIERNES</th>
+            <th>SABADO</th>
+            <th>DOMINGO</th>
+          </tr>
+        </thead>
+        <tbody *ngFor="let week of [0,1,2,3,4,5]">
+          <tr>
+            <td *ngFor="let day of ['MON','TUE','WED', 'THU', 'FRI', 'SAT', 'SUN']">
+              <div><b>{{calendar[week][day].day}}</b></div>
+            </td>
+          </tr>
+          <tr>
+            <td *ngFor="let day of ['MON','TUE','WED', 'THU', 'FRI', 'SAT', 'SUN']">
+              <div *ngFor="let appointment of calendar[week][day].appointments">{{ appointment }}</div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+    </section>
+    <hr>
+
+    <article>
+      <h2>Boletas</h2>
+
+      <details *ngFor="let patient of patients_invoices">
+        <summary>{{patient.identification}}</summary>
+        <p *ngFor="let invoice of patient.invoices; let i = index">
+          <i>Boleta {{ i + 1 }}: </i> {{invoice.date}} ${{invoice.amount}}
+        </p>
+        <div><p><b>Total: </b>${{ patient.total }}</p></div>
+      </details>
+
+      <button (click)="generateInvoices()">Generar boletas</button>
+    </article>
+
+    <hr>
+    <section>
+      <form>
+        <label>Nombre:</label>
+        <input type="text" size="50" name="newAppointmentName" [(ngModel)]="newAppointmentName" placeholder="Nombre paciente">
+        <label>Valor:</label>
+        <input type="number" size="20" name="newAppointmentValue" [(ngModel)]="newAppointmentValue" value="30000">
+        <label>Fecha:</label>
+        <input type="date" name="newAppointmentDate" [(ngModel)]="newAppointmentDate" value="2018-07-22">
+        <label >Hora:</label>
+        <input type="time" name="newAppointmentTime" [(ngModel)]="newAppointmentTime" required>
+        <label>Cada cuantas semanas se repite:</label>
+        <input type="number" size="2" name="newAppointmentFrecuency" [(ngModel)]="newAppointmentFrecuency" value="0">
+        <label>Hasta cuando se repite:</label>
+        <input type="date" name="newAppointmentEndDate" [(ngModel)]="newAppointmentEndDate" value="2018-07-22">
+        <button (click)="scheduleAppointments()">Agendar consultas</button>
+      </form>
+    </section>
+
+  </main>
+
+
+</body>
