@@ -23,7 +23,7 @@ class CreateAppointments:
             Appointment(date_time = date, 
                         cost=self.cost, 
                         practitioner=self.practitioner, 
-                        patient_id=self.patient).save()
+                        patient=self.patient).save()
 
     def __date_times_for_appointments(self):
             appointments_dates = []
