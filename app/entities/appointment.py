@@ -1,13 +1,25 @@
+from copy import deepcopy
 from .entity import Entity
 from .patient import Patient
 
 class AppointmentFunctional:
 
     def __init__(self, date_time, cost, practitioner, patient):
+        assert isinstance(patient, Patient)
+
         self.date_time = date_time
         self.cost = cost
         self.practitioner = practitioner
         self.patient = patient
+
+    @property
+    def patient(self):
+        return self._patient
+
+    @patient.setter
+    def patient(self, value):
+        assert isinstance(value, Patient)
+        self._patient = value
 
 
 class AppointmentData(Entity):
@@ -18,20 +30,11 @@ class AppointmentData(Entity):
     def set_data_class(cls, data_class):
         cls.data_class = data_class
 
-    def save(self, appointment):
-        if isinstance(appointment.patient, Patient):
-            appointment.patient = appointment.patient.identification
-        self._p.save(appointment)
-
-    @staticmethod
-    def __load_or_create_patient(patient_id):
-        loaded_patient = Patient.find_by_identification(patient_id)
-        if loaded_patient:
-            return loaded_patient[0]
-        else:
-            patient = Patient(patient_id)
-            patient.save()
-            return patient
+    @classmethod
+    def save(cls, appointment):
+        appointment_to_save = deepcopy(appointment)
+        appointment_to_save._patient = appointment.patient.identification
+        cls._p.save(appointment_to_save)
 
     @classmethod
     def find_by_month_and_year(cls, month, year):
@@ -42,7 +45,7 @@ class AppointmentData(Entity):
                 data.date_time,
                 data.cost,
                 data.practitioner,
-                cls.__load_or_create_patient(data.patient)
+                Patient.find_by_identification(data.patient)[0]
             ) 
         for data in read_data]
 
@@ -56,7 +59,7 @@ class AppointmentData(Entity):
                 data.date_time,
                 data.cost,
                 data.practitioner,
-                cls.__load_or_create_patient(data.patient)
+                Patient.find_by_identification(data.patient)[0]
             ) 
         for data in read_data]
 
@@ -70,7 +73,7 @@ class AppointmentData(Entity):
                 data.date_time,
                 data.cost,
                 data.practitioner,
-                cls.__load_or_create_patient(data.patient)
+                Patient.find_by_identification(data.patient)[0]
             ) 
         for data in read_data]
 

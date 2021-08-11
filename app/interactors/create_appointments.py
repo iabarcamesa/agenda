@@ -1,4 +1,5 @@
 from ..entities import Appointment
+from ..entities import Patient
 from datetime import timedelta
 
 class CreateAppointments:
@@ -23,7 +24,17 @@ class CreateAppointments:
             Appointment(date_time = date, 
                         cost=self.cost, 
                         practitioner=self.practitioner, 
-                        patient=self.patient).save()
+                        patient=self.__load_or_create_patient(self.patient)).save()
+
+    @staticmethod
+    def __load_or_create_patient(patient_id):
+        loaded_patient = Patient.find_by_identification(patient_id)
+        if loaded_patient:
+            return loaded_patient[0]
+        else:
+            patient = Patient(patient_id)
+            patient.save()
+            return patient
 
     def __date_times_for_appointments(self):
             appointments_dates = []

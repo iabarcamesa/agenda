@@ -10,7 +10,7 @@ def test_save_appointment():
     a_1 = Appointment(date_time = datetime(2020,11,22), 
                       cost=100, 
                       practitioner='practitioner_1', 
-                      patient='patient_1')
+                      patient=Patient('patient_1'))
 
     a_1.save()
 
@@ -22,27 +22,28 @@ def test_save_appointment():
 def test_find_appointments_by_month_and_year():
 
     p.flush()
+    Patient(identification='patient_1').save()
 
     a_1 = Appointment(date_time = datetime(2020,11,22), 
                     cost=100, 
                     practitioner='practitioner_1', 
-                    patient='patient_1').save()
+                    patient=Patient('patient_1')).save()
 
     a_2 = Appointment(date_time = datetime(2020,11,11), 
                 cost=100, 
                 practitioner='practitioner_1', 
-                patient='patient_1').save()
+                patient=Patient('patient_1')).save()
 
 
     a_3 = Appointment(date_time = datetime(2020,11,1), 
                     cost=100, 
                     practitioner='practitioner_1', 
-                    patient='patient_1').save()
+                    patient=Patient('patient_1')).save()
 
     a_4 = Appointment(date_time = datetime(2020,10,26), 
                 cost=100, 
                 practitioner='practitioner_1', 
-                patient='patient_1').save()
+                patient=Patient('patient_1')).save()
 
     result = Appointment.find_by_month_and_year(year=2020, month=11)
 
@@ -53,27 +54,28 @@ def test_find_appointments_by_month_and_year():
 def test_find_appointments_by_month_and_year_and_practitioner():
 
     p.flush()
+    Patient(identification='patient_1').save()
 
     a_1 = Appointment(date_time = datetime(2020,11,22), 
                     cost=100, 
                     practitioner='practitioner_1', 
-                    patient='patient_1').save()
+                    patient=Patient('patient_1')).save()
 
     a_2 = Appointment(date_time = datetime(2020,11,11), 
                 cost=100, 
                 practitioner='practitioner_1', 
-                patient='patient_1').save()
+                patient=Patient('patient_1')).save()
 
 
     a_3 = Appointment(date_time = datetime(2020,11,1), 
                     cost=100, 
                     practitioner='practitioner_2', 
-                    patient='patient_1').save()
+                    patient=Patient('patient_1')).save()
 
     a_4 = Appointment(date_time = datetime(2020,10,26), 
                 cost=100, 
                 practitioner='practitioner_1', 
-                patient='patient_1').save()
+                patient=Patient('patient_1')).save()
 
     result = Appointment.find_by_month_and_year_and_practitioner(year=2020, month=11, practitioner='practitioner_1')
 
@@ -84,27 +86,28 @@ def test_find_appointments_by_month_and_year_and_practitioner():
 def test_find_appointments_by_month_and_year_and_patient():
 
     p.flush()
+    Patient(identification='patient_1').save()
 
     a_1 = Appointment(date_time = datetime(2020,11,22), 
                     cost=100, 
                     practitioner='practitioner_1', 
-                    patient='patient_1').save()
+                    patient=Patient('patient_1')).save()
 
     a_2 = Appointment(date_time = datetime(2020,11,11), 
                 cost=100, 
                 practitioner='practitioner_1', 
-                patient='patient_2').save()
+                patient=Patient('patient_2')).save()
 
 
     a_3 = Appointment(date_time = datetime(2020,11,1), 
                     cost=100, 
                     practitioner='practitioner_1', 
-                    patient='patient_1').save()
+                    patient=Patient('patient_1')).save()
 
     a_4 = Appointment(date_time = datetime(2020,10,26), 
                 cost=100, 
                 practitioner='practitioner_1', 
-                patient='patient_1').save()
+                patient=Patient('patient_1')).save()
 
     result = Appointment.find_by_month_and_year_and_patient(year=2020, month=11, patient='patient_1')
 
@@ -127,7 +130,7 @@ def test_find_appointments_whith_existing_patient():
     Appointment(date_time = datetime(2020,11,22), 
                 cost=100, 
                 practitioner='practitioner_1', 
-                patient='16212513-3').save()
+                patient=Patient.find_by_identification('16212513-3')[0]).save()
 
     patient = Appointment.find_by_month_and_year(year=2020, month=11)[0].patient
 
