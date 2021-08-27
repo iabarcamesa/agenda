@@ -4,8 +4,7 @@ from .patient import Patient
 
 class AppointmentFunctional:
 
-    def __init__(self, date_time, cost, practitioner, patient):
-        assert isinstance(patient, Patient)
+    def __init__(self, date_time, cost, practitioner, patient: Patient):
         self.date_time = date_time
         self.cost = cost
         self.practitioner = practitioner
@@ -17,7 +16,7 @@ class AppointmentFunctional:
 
     @patient.setter
     def patient(self, value):
-        assert isinstance(value, Patient)
+        assert isinstance(value, Patient), "patient mus be an instance of Patient"
         self._patient = value
 
 

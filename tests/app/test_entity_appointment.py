@@ -3,6 +3,25 @@ from app.entities import Patient
 from app.entities.persistence import Persistence as p
 from datetime import datetime
 
+def test_initialize_appointment():
+    try:
+        a_1 = Appointment(date_time = datetime(2020,11,22), 
+                        cost=100, 
+                        practitioner='practitioner_1', 
+                        patient=Patient('patient_1'))
+    except:
+        assert False, 'Wrong initialization'
+
+def test_wrong_initialize_appointment():
+    try:
+        a_1 = Appointment(date_time = datetime(2020,11,22), 
+                        cost=100, 
+                        practitioner='practitioner_1', 
+                        patient='patient_1')
+        assert False, 'Appointment was initialized with a non Patient in patient variable'
+    except(AssertionError) as e:
+        assert str(e) == 'patient mus be an instance of Patient'
+
 def test_save_appointment():
 
     p.flush()

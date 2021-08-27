@@ -10,7 +10,7 @@ export class AppComponent implements OnInit{
 
   title = 'ui';
   patients_invoices: any = []
-    calendar: any = {
+  calendar: any = {
       0: {
        'MON': {'day': 26, 'appointments': []},
        'TUE': {'day': 27, 'appointments': []},
@@ -81,6 +81,8 @@ export class AppComponent implements OnInit{
 
   bearer = ''
 
+  appointmentMenuState = 'searchPatientId';
+
   constructor(private http: HttpClient) { }
 
   ngOnInit(){
@@ -141,8 +143,9 @@ export class AppComponent implements OnInit{
     }
     this.http.post(endpoint, {}, options).subscribe(apiData => {
       this.http.get('api/generate_calendar?month='+ this.monthStringToInt(this.selectedMonth) +'&year='+this.selectedYear, options).subscribe(calendarData => {
-        console.log(calendarData)
         this.calendar = calendarData;
+        this.appointmentMenuState = 'searchPatientId'
+        window.scrollTo({ top: 0, behavior: 'smooth' });
       })
     })
 
@@ -160,6 +163,19 @@ export class AppComponent implements OnInit{
       this.patients_invoices = apiData['patients']
     })
 
+  }
+
+  selectAppointment(appointment){
+    document.getElementById("appointment").scrollIntoView();
+    console.log("appointment selected: " + appointment)
+  }
+
+  searchPatientId(){
+    this.appointmentMenuState = 'editPatientData'
+  }
+
+  savePatientData(){
+    this.appointmentMenuState = 'scheduleAppointment'
   }
 
   private thisYear(){

@@ -16,7 +16,7 @@
         <button (click)="showAgenda()">Ver agenda</button>
       </form>
 
-      <table>
+      <table id="calendar">
         <thead>
           <tr>
             <th>LUNES</th>
@@ -36,7 +36,7 @@
           </tr>
           <tr>
             <td *ngFor="let day of ['MON','TUE','WED', 'THU', 'FRI', 'SAT', 'SUN']">
-              <div *ngFor="let appointment of calendar[week][day].appointments">{{ appointment }}</div>
+              <div *ngFor="let appointment of calendar[week][day].appointments" (click)="selectAppointment(appointment)"><a>{{ appointment }}</a></div>
             </td>
           </tr>
         </tbody>
@@ -60,21 +60,45 @@
     </article>
 
     <hr>
-    <section>
+    <section id="appointment">
       <form>
-        <label>Nombre:</label>
-        <input type="text" size="50" name="newAppointmentName" [(ngModel)]="newAppointmentName" placeholder="Nombre paciente">
-        <label>Valor:</label>
-        <input type="number" size="20" name="newAppointmentValue" [(ngModel)]="newAppointmentValue" value="30000">
-        <label>Fecha:</label>
-        <input type="date" name="newAppointmentDate" [(ngModel)]="newAppointmentDate" value="2018-07-22">
-        <label >Hora:</label>
-        <input type="time" name="newAppointmentTime" [(ngModel)]="newAppointmentTime" required>
-        <label>Cada cuantas semanas se repite:</label>
-        <input type="number" size="2" name="newAppointmentFrecuency" [(ngModel)]="newAppointmentFrecuency" value="0">
-        <label>Hasta cuando se repite:</label>
-        <input type="date" name="newAppointmentEndDate" [(ngModel)]="newAppointmentEndDate" value="2018-07-22">
-        <button (click)="scheduleAppointments()">Agendar consultas</button>
+        <div [ngSwitch]="appointmentMenuState">
+          <div *ngSwitchCase="'searchPatientId'">
+            <label>RUT:</label>
+            <input type="text" size="50" placeholder="12345678-9">
+            <button (click)="searchPatientId()">Buscar</button>
+          </div>
+          <div *ngSwitchCase="'editPatientData'">
+            <label>Nombres:</label>
+            <input type="text" size="50" placeholder="Nombre">
+            <label>Apellido paterno:</label>
+            <input type="text" size="50" placeholder="Apellido paterno">
+            <label>Apellido materno:</label>
+            <input type="text" size="50" placeholder="Apellido materno">
+            <label>Región:</label>
+            <input type="text" size="50" placeholder="Región">
+            <label>Comuna:</label>
+            <input type="text" size="50" placeholder="Comuna">
+            <label>Dirección:</label>
+            <input type="text" size="50" placeholder="Calle y numero">
+            <button (click)="savePatientData()">Guardar y continuar</button>
+          </div>
+          <div *ngSwitchCase="'scheduleAppointment'">
+            <label>Nombre:</label>
+            <input type="text" size="50" name="newAppointmentName" [(ngModel)]="newAppointmentName" placeholder="Nombre paciente">
+            <label>Valor:</label>
+            <input type="number" size="20" name="newAppointmentValue" [(ngModel)]="newAppointmentValue" value="30000">
+            <label>Fecha:</label>
+            <input type="date" name="newAppointmentDate" [(ngModel)]="newAppointmentDate" value="2018-07-22">
+            <label >Hora:</label>
+            <input type="time" name="newAppointmentTime" [(ngModel)]="newAppointmentTime" required>
+            <label>Cada cuantas semanas se repite:</label>
+            <input type="number" size="2" name="newAppointmentFrecuency" [(ngModel)]="newAppointmentFrecuency" value="0">
+            <label>Hasta cuando se repite:</label>
+            <input type="date" name="newAppointmentEndDate" [(ngModel)]="newAppointmentEndDate" value="2018-07-22">
+            <button (click)="scheduleAppointments()">Agendar consultas</button>
+          </div>
+        </div>
       </form>
     </section>
 
