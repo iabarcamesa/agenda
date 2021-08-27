@@ -6,7 +6,6 @@ class AppointmentFunctional:
 
     def __init__(self, date_time, cost, practitioner, patient):
         assert isinstance(patient, Patient)
-
         self.date_time = date_time
         self.cost = cost
         self.practitioner = practitioner
